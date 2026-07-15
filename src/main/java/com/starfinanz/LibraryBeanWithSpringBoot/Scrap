@@ -1,0 +1,115 @@
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                for (String index : row) {
+                    System.out.printf("%-15s", index);
+                }
+                IO.println();
+            }
+        } catch (Exception e) {
+            IO.println("File could be found.");
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (Exception e) {
+                IO.println("Reader could not be closed.");
+                e.printStackTrace();
+            }
+        }
+
+
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+
+            writer.write();
+        } catch (IOException e) {
+            IO.println("Could not write to file.");
+            e.printStackTrace();
+        }
+
+
+
+            String file = "src\\books.csv";
+            BufferedReader reader;
+            String line;
+            BufferedWriter writer;
+            List<String> bookList = new ArrayList<>();
+
+
+
+
+            //import java.io.IOException;
+            //import java.nio.file.Files;
+            //import java.nio.file.Path;
+            //import java.util.ArrayList;
+            //import java.util.List;
+            //import java.util.stream.Collectors;
+            //
+            //public class CSVFileStream {
+            //
+            //    void starteCSVFileStream() {
+            //
+            //
+            //        Path path = Path.of("src", "main", "java", "books.csv");
+            //
+            //        try {
+            //            List<oldBook> bookList = new ArrayList(Files.lines(path))
+            //                    .skip(1)
+            //                    .map(CSVFileStream::getBook)
+            //                    .toList();
+            //            IO.println(bookList);
+            //
+            //            boolean check = bookList.equals("1234,Test Buch,Test Autor,Verfügbar");
+            //
+            //            if (check) {
+            //                IO.println("Ist bereits vorhand");
+            //            } else {
+            //                IO.println("Kann hinzugefügt werden");
+            //            }
+            //
+            //        } catch (IOException e) {
+            //            e.printStackTrace();
+            //        }
+            //    }
+            //
+            //    static oldBook getBook(String line) {
+            //        String [] fields = line.split(",");
+            //            if (fields.length != 4)
+            //                throw new RuntimeException("Ungültiger Eintrag - " + line);
+            //            return new oldBook (fields[0] , fields[1], fields[2], fields [3]);
+            //
+            //    }
+            //}
+
+
+
+
+
+            //        if (!beans.isEmpty()) {
+            //BookBean editBook = beans.get(1);
+            //            editBook.setIsbn(12345);
+            //            editBook.setTitel("Downey");
+            //            editBook.setStatus("Verfügbar");
+            //        }
+
+
+
+
+                String getNameForBorrow (List<UserBean> users) {
+
+                    UserBean borrower = null;
+
+                    while (true) {
+                        String name = IO.readln("Name des Entleiher: ");
+
+                        borrower  = findUserName(users, name);
+
+                        if (name.isEmpty()) {
+                            IO.println("Bitte gebe einen Namen ein.");
+                        } else {
+                            return name;
+                        }
+                    }
+                }
