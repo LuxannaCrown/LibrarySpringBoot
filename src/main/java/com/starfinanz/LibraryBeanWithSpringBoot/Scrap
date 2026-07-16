@@ -113,3 +113,15 @@
                         }
                     }
                 }
+
+
+
+                            for (UserBean user : users) {
+
+                                if (user.getId() == finalDeleteID && user.getBorrowedbooks().isEmpty()) {
+                                    users.remove(finalDeleteID);
+                                    IO.println("Benutzer wurde gelöscht.");
+                                    return;
+                                } else {
+                                    IO.println("Benutzer hat noch Bücher ausgeliehen. Vorgang wird abgebrochen.");
+                                    break;

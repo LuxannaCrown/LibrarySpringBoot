@@ -3,17 +3,18 @@ package com.starfinanz.LibraryBeanWithSpringBoot;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.starfinanz.LibraryBeanWithSpringBoot.BookBean;
-import com.starfinanz.LibraryBeanWithSpringBoot.UserBean;
 
+import javax.swing.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Library {
 
-    boolean libraryAktiv = true;
+    boolean libraryAktiv = false;
 
     public void starteLibrary() {
         List<BookBean> beans = new ArrayList<>();
@@ -39,6 +40,11 @@ public class Library {
             e.printStackTrace();
         }
 
+
+        libraryAktiv = getLogin();  //Startet das Menü wenn Login bestätigt ist
+        if (!libraryAktiv) {
+            IO.println("Login wurde 3 mal Falsch eingegeben.\nProgramm wird beendet.");
+        }
 
         while (libraryAktiv) {
 
@@ -93,6 +99,22 @@ public class Library {
                     break;
 
 
+                case "8":
+                    getDeleteBook(beans, users);
+                    saveBook(beans);
+                    saveUser(users);
+                    IO.readln("\nDrück Enter um fortzufahren.");
+                    break;
+
+
+                case "9":
+                    getDeleteUser(users);
+                    saveBook(beans);
+                    saveUser(users);
+                    IO.readln("\nDrück Enter um fortzufahren");
+                    break;
+
+
                 case "0": //Programm beenden
                     saveBook(beans);
                     saveUser(users);
@@ -105,20 +127,57 @@ public class Library {
 
 
 
-    String getMenu() {  //Funktion für ein Menü mit Auswahl
-        String[] menuOptions = {"1 - Buch hinzufügen\n", "2 - Alle Bücher anzeigen\n", "3 - Buch ausleihen\n",
-                "4 - Buch zurückgeben\n", "5 - Buch suchen\n", "6 - Benutzerliste anzeigen\n", "7 - Benutzer hinzufügen\n", "0 - Beenden\n"};
+    boolean getLogin () {  //Funktion für Bestätigung via Login-Daten
+        IO.println("\n\n    Gebe deine Login-Daten ein.");
 
-        IO.println("\n\n===== Bibiliothek =====");
-        IO.println("\n\n" + Arrays.toString(menuOptions) + "\n\nGebe zur Auswahl die zugehörige Zahl ein.");
+        String uid;
+        String password;
+
+        for (int i = 0; i < 3; i++) {
+
+            while (true) {
+                uid = IO.readln("ID: ");
+                password = IO.readln("Password: ");
+
+                if (uid.isEmpty() || password.isEmpty()) {
+                    IO.println("Bitte gebe deine Login-Daten ein.\n");
+                } else {
+                    break;
+                }
+            }
+
+            String hashPassword = hashPassword(password);  //Jagt den String "password" durch ein Hash
+
+            if (uid.equals("Admin") && hashPassword.equals("03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4")) {
+                return true;
+            } else {
+                IO.println("Deine ID und Password stimmen nicht überein.");
+            }
+        }
+        return false;
+    }
+
+
+
+    String getMenu() {  //Funktion für ein Menü mit Auswahl
+        String[] menuOptions = {"1 - Buch hinzufügen", "2 - Alle Bücher anzeigen", "3 - Buch ausleihen",
+                "4 - Buch zurückgeben", "5 - Buch suchen", "6 - Benutzerliste anzeigen",
+                "7 - Benutzer hinzufügen", "8 - Buch löschen", "9 - Benutzer löschen", "0 - Beenden"};
+
+        IO.println("\n\n===== Bibliothek =====\n");
+
+        for (String option : menuOptions) {
+            IO.println(option);
+        }
+
         while (true) {
-            String selection = IO.readln("Menuauswahl: ");
+            String selection = IO.readln("\nGebe zur Auswahl die zugehörige Zahl ein.\nMenuauswahl: ");
 
             if (selection.equals("1") || selection.equals("2") || selection.equals("3") || selection.equals("4") || selection.equals("5")
-                    || selection.equals("6") || selection.equals("7") || selection.equals("0")) {
+                    || selection.equals("6") || selection.equals("7") || selection.equals("8") || selection.equals("9") || selection.equals("0")) {
                 return selection;
             } else {
-                IO.println("Bitte benutze 0-7 zur Menüauswahl.");
+                IO.println("Bitte benutze 0-9 zur Menüauswahl.");
             }
         }
     }
@@ -136,6 +195,7 @@ public class Library {
                 long newIsbn = Long.parseLong(IO.readln("ISBN: "));
 
                 if (newIsbn <= 0) {
+                    IO.println("\nRückkehr in das Hauptmenü\n");
                     return;
                 } else {
                     newBook.setIsbn(newIsbn);
@@ -364,6 +424,19 @@ public class Library {
 
 
 
+    UserBean findUserID (List<UserBean> users, int deleteID) {  //Checkt einmal ober der User überhaubt in der users.csv existiert
+
+        for (UserBean user :  users) {
+            if (user.getId() == deleteID) {
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+
+
     void getUserList (List<UserBean> users) {
         IO.println("\n===== Benutzerliste =====\n");
 
@@ -394,6 +467,132 @@ public class Library {
         users.add(newUser);
         IO.println("\nNutzer wurde hinzugefügt.");
         }
+
+
+
+    void getDeleteBook (List<BookBean> beans, List<UserBean> users) {
+        IO.println("\n===== Buch löschen =====\n");
+        long deleteIsbn = 0;
+
+        while (true) {
+            try {
+                deleteIsbn = Long.parseLong(IO.readln("Zu löschende ISBN: "));
+            } catch (NumberFormatException e) {
+                IO.println("Bitte gültige ISBN eingeben.");
+            }
+
+            if (deleteIsbn <= 0) {
+                IO.println("\nRückkehr in das Hauptmenü.\n");
+                return;
+            }
+
+            long finalDeleteIsbn = deleteIsbn;
+
+            for (UserBean user : users) {
+                if (user.hasBorrowedBooks(finalDeleteIsbn)) {
+
+                    while (true) {
+                        String confirmContinue = IO.readln(user.getName() + " hat das Buch gerade ausgeliehen. Trotzdem fortfahren? Ja/Nein: ");
+
+                        if (confirmContinue.equalsIgnoreCase("Ja")) {
+                            user.removeBorrowedBooks(finalDeleteIsbn);
+                            break;
+
+                        } else if (confirmContinue.equalsIgnoreCase("Nein")) {
+                            IO.println("Vorgang abgebrochen.");
+                            return;
+
+                        } else {
+                            IO.println("Bitte mit 'Ja' oder 'Nein' antworten.");
+                        }
+                    }
+                    break;
+                }
+            }
+
+            boolean confirmDelete = beans.removeIf(book -> book.getIsbn() == finalDeleteIsbn);
+
+
+            if (confirmDelete) {
+                IO.println("Das Buch wurde erfolgreich gelöscht.");
+                break;
+            } else {
+                IO.println("Buch konnte nicht gefunden werden");
+            }
+        }
+    }
+
+
+
+    void getDeleteUser (List<UserBean> users) {
+        IO.println("\n===== Benutzer löschen =====\n");
+
+        int deleteID = 0;
+
+        while (true) {
+            try {
+                deleteID = Integer.parseInt(IO.readln("Zu löschende ID: "));
+            } catch (NumberFormatException e) {
+                IO.println("Bitte gültige ID eingeben.");
+            }
+
+            if (deleteID <= 0) {
+                IO.println("\nRückkehr in das Hauptmenü.\n");
+                return;
+            }
+
+            UserBean user = findUserID(users, deleteID);
+
+            if (user == null) {
+                IO.println("Benutzer konnte nicht gefunden werden");
+
+            } else if (user.getBorrowedbooks() != null && !user.getBorrowedbooks().isEmpty()) {
+                IO.println("Benutzer hat noch Bücher ausgeliehen. Vorgang wird abgebrochen.");
+                return;
+
+            } else {
+
+                while (true) {
+                    String confirmContinue = IO.readln(user.getName() + " unwiderruflich löschen? Ja/Nein: ");
+
+                    if (confirmContinue.equalsIgnoreCase("Ja")) {
+                        users.remove(user);
+                        IO.println("Benutzer " + user.getId() + " | " + user.getName() + " wurde gelöscht.");
+                        break;
+
+                    } else if (confirmContinue.equalsIgnoreCase("Nein")) {
+                        IO.println("Vorgang abgebrochen.");
+                        return;
+
+                    } else {
+                        IO.println("Bitte mit 'Ja' oder 'Nein' antworten.");
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+
+
+    String hashPassword  (String password) {
+        String fehlschlag = "FAIL";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+
+
+        } catch (NoSuchAlgorithmException e) {
+            JOptionPane.showMessageDialog(null, "Fail");
+            return fehlschlag;
+        }
+    }
 
 
 
