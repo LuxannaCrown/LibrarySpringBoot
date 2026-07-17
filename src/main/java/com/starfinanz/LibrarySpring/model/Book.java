@@ -1,9 +1,9 @@
-package com.starfinanz.LibraryBeanWithSpringBoot;
+package com.starfinanz.LibrarySpring.model;
 
-import com.opencsv.*;
+
 import com.opencsv.bean.CsvBindByName;
 
-public class BookBean {
+public class Book {
 
     @CsvBindByName
     private long isbn;
@@ -20,8 +20,13 @@ public class BookBean {
     @CsvBindByName
     private String besitzer;
 
-    public BookBean() {
+    @CsvBindByName
+    private int besitzerId;
+
+
+    public Book() {
     }
+
 
     public long getIsbn() {
         return isbn;
@@ -31,6 +36,7 @@ public class BookBean {
         this.isbn = isbn;
     }
 
+
     public String getTitel() {
         return titel;
     }
@@ -38,6 +44,7 @@ public class BookBean {
     public void setTitel(String titel) {
         this.titel = titel;
     }
+
 
     public String getAutor() {
         return autor;
@@ -47,6 +54,7 @@ public class BookBean {
         this.autor = autor;
     }
 
+
     public String getStatus() {
         return status;
     }
@@ -55,11 +63,20 @@ public class BookBean {
         this.status = status;
     }
 
+
     public String getBesitzer() {
         return besitzer;
     }
 
     public void setBesitzer(String besitzer) {
         this.besitzer = besitzer;
+    }
+
+    public int getBesitzerId() {
+        return besitzerId;
+    }
+
+    public void setBesitzerId(int besitzerId) {
+        this.besitzerId = besitzerId;
     }
 }

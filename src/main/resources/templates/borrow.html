@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Buch ausleihen</title>
+</head>
+
+
+<body>
+
+<h1>Buch ausleihen</h1>
+
+
+<form action="/borrow" method="post">
+
+
+    <input type="hidden"
+           name="isbn"
+           th:value="${isbn}">
+
+
+    Benutzer:
+
+    <select name="userId">
+
+
+        <option th:each="user : ${users}"
+                th:value="${user.id}"
+                th:text="${user.name}">
+        </option>
+
+
+    </select>
+
+
+    <br><br>
+
+
+    <button type="submit">
+        Ausleihen
+    </button>
+
+
+</form>
+
+<p th:if="${error}"
+   th:text="${error}"
+   style="color:red;">
+</p>
+
+</body>
+</html>
