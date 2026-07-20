@@ -45,7 +45,7 @@ public class BorrowController {
             model.addAttribute("error",
                     "Buch konnte nicht ausgeliehen werden.");
 
-            return "borrow";
+            return "error-page";
         }
         return "redirect:/";
     }

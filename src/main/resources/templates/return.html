@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rückgabe</title>
+</head>
+<body>
+
+<h1>Rückgabe</h1>
+
+<h2 th:text="${user.name}">Benutzername</h2>
+
+
+<h3>Ausgeliehene Bücher:</h3>
+
+
+<div th:if="${books.isEmpty()}">
+    <p>Dieser Benutzer hat keine Bücher ausgeliehen.</p>
+</div>
+
+
+<table border="1" th:if="${!books.isEmpty()}">
+    <thead>
+    <tr>
+        <th>Titel</th>
+        <th>Autor</th>
+        <th>ISBN</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+
+
+    <tbody>
+
+    <tr th:each="book : ${books}">
+
+        <td th:text="${book.titel}">Titel</td>
+        <td th:text="${book.autor}">Autor</td>
+        <td th:text="${book.isbn}">ISBN</td>
+
+
+        <td>
+            <form th:action="@{/return/{userId}(userId=${user.id})}" method="post">
+
+                <input type="hidden" name="isbn" th:value="${book.isbn}">
+
+                <button type="submit">Zurückgeben</button>
+            </form>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+
+<p th:if="${error}"
+   th:text="${error}"
+   style="color:red;">
+</p>
+
+
+</body>
+</html>
