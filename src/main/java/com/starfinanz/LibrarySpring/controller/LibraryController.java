@@ -141,4 +141,14 @@ public class LibraryController {
 
         return "redirect:/home";
     }
+
+
+    @PostMapping("/closeSession")
+    public String closeSession (
+            HttpSession session,
+            Model model) {
+
+            session.invalidate();
+            return "redirect:/";
+    }
 }

@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="/css/style.css">
     <title>Rückgabe</title>
 </head>
-<body>
+<body class="return-page">
 
-<h1>Rückgabe</h1>
+<div class="return-box">
+<div class="header">
+    <h1>Rückgabe</h1>
+</div>
 
+<div class="card">
 <h2 th:text="${user.name}">Benutzername</h2>
 
 
@@ -18,7 +23,7 @@
 </div>
 
 
-<table border="1" th:if="${!books.isEmpty()}">
+<table class="library-table" th:if="${!books.isEmpty()}">
     <thead>
     <tr>
         <th>Titel</th>
@@ -43,14 +48,15 @@
 
                 <input type="hidden" name="isbn" th:value="${book.isbn}">
 
-                <button type="submit">Zurückgeben</button>
+                <button class="return-button" type="submit">Zurückgeben</button>
             </form>
         </td>
 
     </tr>
     </tbody>
 </table>
-
+</div>
+</div>
 
 <p th:if="${error}"
    th:text="${error}"

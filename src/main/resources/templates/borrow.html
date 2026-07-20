@@ -2,20 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link rel="stylesheet" href="/css/style.css">
     <title>Buch ausleihen</title>
 </head>
 
 
-<body>
-
-<h1>Buch ausleihen</h1>
+<body class="borrow-page">
 
 
-<form th:action="@{/borrow/{isbn}(isbn=${isbn})}" method="post">
 
+
+<form class="borrow-box" th:action="@{/borrow/{isbn}(isbn=${isbn})}" method="post">
+
+    <h1>Buch ausleihen</h1>
 
     Benutzer:
-    <select name="userId">
+    <select class="select" name="userId">
         <option th:each="user : ${users}"
                 th:value="${user.id}"
                 th:text="${user.name}">
@@ -24,7 +26,7 @@
 
     <br><br>
 
-    <button type="submit">
+    <button class="borrow-button" type="submit">
         Ausleihen
     </button>
 
