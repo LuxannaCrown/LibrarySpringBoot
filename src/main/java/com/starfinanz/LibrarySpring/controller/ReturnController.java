@@ -1,6 +1,7 @@
 package com.starfinanz.LibrarySpring.controller;
 
 import com.starfinanz.LibrarySpring.service.LibraryService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,13 @@ public class ReturnController {
     @GetMapping("/return/{userId}")
     public String returnPage(
             @PathVariable int userId,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
+
 
         var user = libraryService.findUserID(userId);
         var books = libraryService.getBorrowedBooks(userId);
@@ -32,11 +39,13 @@ public class ReturnController {
         return "return";
     }
 
+
+
     @PostMapping("/return/{userId}")
     public String returnBook(
             @RequestParam long isbn,
             @PathVariable int userId,
-            Model model){
+            Model model) {
 
         boolean returned = libraryService.returnBook(isbn, userId);
 
@@ -46,6 +55,6 @@ public class ReturnController {
 
             return "return";
         }
-        return "redirect:/";
+        return "redirect:/home";
     }
 }

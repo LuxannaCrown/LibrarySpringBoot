@@ -9,6 +9,9 @@ import com.starfinanz.LibrarySpring.model.User;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -126,6 +129,7 @@ public class LibraryService {
     }
 
 
+
     public boolean addBook (long isbn, String titel, String autor) {
         boolean isbnExists = books.stream()  //Checkt ob es bereits einen Eintrag mit der ISBN in books.csv existiert
                 .anyMatch(book -> book.getIsbn() == isbn);
@@ -150,8 +154,6 @@ public class LibraryService {
 
 
     public boolean deleteBook(long isbn) {
-
-
         boolean borrowed = users.stream()
                 .anyMatch(user -> user.hasBook(isbn));
 
@@ -169,16 +171,9 @@ public class LibraryService {
     }
 
 
+
     public boolean borrowBook(long isbn, int userId) {
-
-        Book book = null;
-
-        for (Book b : books) {
-            if (b.getIsbn() == isbn) {
-                book = b;
-                break;
-            }
-        }
+        Book book = findBookByIsbn(isbn);
 
         if (book == null) {
             return false;
@@ -211,16 +206,9 @@ public class LibraryService {
     }
 
 
+
     public boolean returnBook(long isbn, int userId) {
-
-        Book book = null;
-
-        for (Book b : books) {
-            if (b.getIsbn() == isbn) {
-                book = b;
-                break;
-            }
-        }
+        Book book = findBookByIsbn(isbn);
 
         if (book == null) {  //Buch existiert nicht
             return false;
@@ -253,6 +241,7 @@ public class LibraryService {
     }
 
 
+
     public boolean addUser(String name) {
         if (name == null || name.isBlank()) {
             return false;
@@ -271,12 +260,14 @@ public class LibraryService {
         newUser.setId(lastId + 1);  //Setzt den neuen User als nächste höchste ID
         newUser.setName(name);
         newUser.setBorrowedBooks("");
+        newUser.setPassword(hashPassword(name));
 
         users.add(newUser);
         saveUser();
 
         return true;
     }
+
 
 
     public boolean deleteUser(int userId) {
@@ -295,6 +286,49 @@ public class LibraryService {
 
         return true;
     }
+
+
+
+    public boolean checkLogin (String username, String password) {  //Funktion für Bestätigung via Login-Daten
+
+
+            if (username.isEmpty() || password.isBlank()) {
+                return false;
+            }
+
+
+            for (User user : users) {
+
+                if (user.getName().equals(username)) {
+                    String hashedPassword = hashPassword(password);  //Jagt den String "password" durch ein Hash
+
+                    return user.getPassword().equals(hashedPassword);
+                }
+            }
+            return false;
+      }
+
+
+
+    public String hashPassword  (String password) {
+        String fehlschlag = "FAIL";
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            IO.println("FAIL");
+            return fehlschlag;
+        }
+    }
+
 
 
    private void saveBook () { //Funktion zum abspeichern in die books.csv Datei

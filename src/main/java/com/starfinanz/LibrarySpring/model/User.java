@@ -17,6 +17,9 @@ public class User {
     @CsvBindByName
     private String borrowedBooks;
 
+    @CsvBindByName
+    private String password;
+
 
     public User() {
     }
@@ -47,6 +50,16 @@ public class User {
     }
 
 
+    public String getPassword() {
+        return password;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
     public void setBorrowedBooks(String borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
@@ -73,6 +86,7 @@ public class User {
 
         borrowedBooks = String.join(";", books);
     }
+
 
     public boolean hasBook (long isbn) { //Checkt ob beim User das Buch überhaupt hinterlegt ist
 

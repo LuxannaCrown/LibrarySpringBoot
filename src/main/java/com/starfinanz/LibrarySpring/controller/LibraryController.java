@@ -15,17 +15,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LibraryController {
 
-
     private final LibraryService libraryService;
-
 
     public LibraryController(LibraryService libraryService) {
         this.libraryService = libraryService;
     }
 
 
-    @GetMapping("/")
-    public String home(Model model, HttpSession session) {
+    @GetMapping("/home")
+    public String home(Model model,
+                       HttpSession session) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         model.addAttribute("books", libraryService.getBooks());
         model.addAttribute("users", libraryService.getUsers());
@@ -67,7 +70,7 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
 
@@ -86,7 +89,7 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
 
@@ -100,7 +103,7 @@ public class LibraryController {
 
         session.setAttribute("searchResult", book);
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
 
@@ -118,7 +121,7 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
 
@@ -136,6 +139,6 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 }

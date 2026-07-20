@@ -39,7 +39,12 @@
         </td>
 
         <td>
-            <a th:href="@{/borrow/{isbn}(isbn=${book.isbn})}">Ausleihen</a>
+            <a th:if="${book.status == 'Verfügbar'}" th:href="@{/borrow/{isbn}(isbn=${book.isbn})}">
+                Ausleihen</a>
+
+            <span th:unless="${book.status == 'Verfügbar'}">
+                Nicht verfügbar
+            </span>
         </td>
     </tr>
 </table>

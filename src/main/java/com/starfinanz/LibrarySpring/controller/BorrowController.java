@@ -2,6 +2,7 @@ package com.starfinanz.LibrarySpring.controller;
 
 
 import com.starfinanz.LibrarySpring.service.LibraryService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class BorrowController {
 
-
     private final LibraryService libraryService;
-
 
     public BorrowController(LibraryService libraryService){
         this.libraryService = libraryService;
@@ -22,22 +21,26 @@ public class BorrowController {
     @GetMapping("/borrow/{isbn}")
     public String borrowPage(
             @PathVariable long isbn,
-            Model model){
+            HttpSession session,
+            Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         model.addAttribute("isbn", isbn);
-        model.addAttribute(
-                "users",
-                libraryService.getUsers()
-        );
+        model.addAttribute("users", libraryService.getUsers());
 
         return "borrow";
     }
+
+
 
     @PostMapping("/borrow/{isbn}")
     public String borrowBook (
             @PathVariable long isbn,
             @RequestParam int userId,
-            Model model){
+            Model model) {
 
         boolean borrowed = libraryService.borrowBook(isbn, userId);
 
@@ -47,6 +50,6 @@ public class BorrowController {
 
             return "error-page";
         }
-        return "redirect:/";
+        return "redirect:/home";
     }
 }
