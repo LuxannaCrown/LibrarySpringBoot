@@ -107,6 +107,19 @@ public class LibraryService {
     }
 
 
+    public Book findBook(long isbn, String titel, String autor) {
+
+        for (Book book : books) {
+            if (book.getIsbn() == isbn || book.getTitel().equalsIgnoreCase(titel)
+                    || book.getAutor().equalsIgnoreCase(autor)) {
+                return book;
+            }
+        }
+
+        return null;
+    }
+
+
     public List<Book> getBorrowedBooks(int userId) {
         User user = findUserID(userId);
 

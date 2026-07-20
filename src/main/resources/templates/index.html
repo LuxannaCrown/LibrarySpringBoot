@@ -10,86 +10,90 @@
 <body>
 
 <div class="header">
+    <img src="css/images/logo.png" class="logo">
+
     <h1>Bibliothek</h1>
 
-    <form class="logout-button" action="/closeSession" method="post">
-        <button type="submit">Logout</button>
+    <form action="/closeSession" method="post">
+        <button class="logout-button" classtype="submit">Logout</button>
     </form>
+
 </div>
 
 <div class="card">
-<h2>Bücher</h2>
+    <h2>Bücher</h2>
 
-<table class="library-table">
-    <tr>
-        <th>ISBN</th>
-        <th>Titel</th>
-        <th>Autor</th>
-        <th>Status</th>
-        <th>Besitzer</th>
-        <th>Löschen</th>
-        <th>Ausleihen</th>
+    <table class="library-table">
+        <tr>
+            <th>ISBN</th>
+            <th>Titel</th>
+            <th>Autor</th>
+            <th>Status</th>
+            <th>Besitzer</th>
+            <th>Löschen</th>
+            <th>Ausleihen</th>
 
-    </tr>
+        </tr>
 
 
-    <tr th:each="book : ${books}">
-        <td th:text="${book.isbn}"></td>
-        <td th:text="${book.titel}"></td>
-        <td th:text="${book.autor}"></td>
-        <td th:text="${book.status}"></td>
-        <td th:text="${book.besitzer}"></td>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.isbn}"></td>
+            <td th:text="${book.titel}"></td>
+            <td th:text="${book.autor}"></td>
+            <td th:text="${book.status}"></td>
+            <td th:text="${book.besitzer}"></td>
 
-        <td>
-            <form th:action="@{/delete/{isbn}(isbn=${book.isbn})}" method="post">
-                <button class="delete-button" type="submit">Löschen</button>
-            </form>
-        </td>
+            <td>
+                <form th:action="@{/delete/{isbn}(isbn=${book.isbn})}" method="post">
+                    <button class="delete-button" type="submit">Löschen</button>
+                </form>
+            </td>
 
-        <td>
-            <a class="button-link" th:if="${book.status == 'Verfügbar'}" th:href="@{/borrow/{isbn}(isbn=${book.isbn})}">
-                Ausleihen</a>
+            <td>
+                <a class="button-link" th:if="${book.status == 'Verfügbar'}" th:href="@{/borrow/{isbn}(isbn=${book.isbn})}">
+                    Ausleihen</a>
 
-            <span class="disabled-button" th:unless="${book.status == 'Verfügbar'}">
-                Nicht verfügbar
-            </span>
-        </td>
-    </tr>
-</table>
+                <span class="disabled-button" th:unless="${book.status == 'Verfügbar'}">
+                    Nicht verfügbar
+                </span>
+            </td>
+        </tr>
+    </table>
 </div>
 
 
 
 <div class="card">
-<h2>Benutzer</h2>
-<table class="library-table">
+    <h2>Benutzer</h2>
 
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Ausgeliehene Bücher</th>
-        <th>Löschen</th>
-        <th>Rückgabe</th>
-    </tr>
+    <table class="library-table">
+
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Ausgeliehene Bücher</th>
+            <th>Löschen</th>
+            <th>Rückgabe</th>
+        </tr>
 
 
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.borrowedBooks}"></td>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.borrowedBooks}"></td>
 
-        <td>
-            <form th:action="@{/deleteUser/{userId}(userId=${user.id})}" method="post">
-                <button class="delete-button" type="submit">Löschen</button>
-            </form>
-        </td>
+            <td>
+                <form th:action="@{/deleteUser/{userId}(userId=${user.id})}" method="post">
+                    <button class="delete-button" type="submit">Löschen</button>
+                </form>
+            </td>
 
-        <td>
-            <a class="button-link" th:href="@{/return/{userId}(userId=${user.id})}">Rückgabe</a>
-        </td>
+            <td>
+                <a class="button-link" th:href="@{/return/{userId}(userId=${user.id})}">Rückgabe</a>
+            </td>
 
-    </tr>
-</table>
+        </tr>
+    </table>
 </div>
 
 
@@ -99,18 +103,18 @@
         <form class="home-box" action="/add" method="post">
 
             <div class="form-group">
-            <label>ISBN:</label>
-            <input type="number" name="isbn" min="0" required>
+                <label>ISBN:</label>
+                <input type="number" name="isbn" min="0" required>
             </div>
 
             <div class="form-group">
-            <label>Titel:</label>
-            <input type="text" name="titel" required>
+                <label>Titel:</label>
+                <input type="text" name="titel" required>
             </div>
 
             <div class="form-group">
-            <label>Autor:</label>
-            <input type="text" name="autor" required>
+                <label>Autor:</label>
+                <input type="text" name="autor" required>
             </div>
 
             <button class="add-button" type="submit">Buch hinzufügen</button>
@@ -124,8 +128,8 @@
         <form action="/addUser" method="post">
 
             <div class="form-group">
-            <label>Name:</label>
-            <input type="text" name="name" required>
+                <label>Name:</label>
+                <input type="text" name="name" required>
             </div>
 
             <button class="add-button" type="submit">Benutzer hinzufügen</button>
@@ -140,12 +144,21 @@
 
             <div class="form-group">
             <label>ISBN:</label>
-            <input type="number" name="isbn" required>
+            <input type="number" name="isbn">
+            </div>
+
+            <div class="form-group">
+                <label>Titel:</label>
+                <input type="text" name="titel">
+            </div>
+
+            <div class="form-group">
+                <label>Autor:</label>
+                <input type="text" name="autor">
             </div>
 
             <button class="search-button" type="submit">Suchen</button>
         </form>
-
     </div>
 
     <div th:if="${searchResult}" class="card">

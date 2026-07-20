@@ -72,6 +72,7 @@ public class Book {
         this.besitzer = besitzer;
     }
 
+
     public int getBesitzerId() {
         return besitzerId;
     }

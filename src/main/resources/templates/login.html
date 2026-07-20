@@ -10,24 +10,21 @@
 
 
 <form class="login-box" action="/login" method="post">
-
     <img src="css/images/logo.png" class="logo">
 
     <h1>Bibliothek Login</h1>
 
+    <div class="form-group">
+        <label>Benutzername:</label>
+        <input type="text" name="username">
+    </div>
 
-        <div class="form-group">
-            <label>Benutzername:</label>
-            <input type="text" name="username">
-        </div>
+    <div class="form-group">
+        <label>Passwort:</label>
+        <input type="password" name="password">
+    </div>
 
-        <div class="form-group">
-            <label>Passwort:</label>
-            <input type="password" name="password">
-        </div>
-
-        <button type="submit">Anmelden</button>
-
+    <button type="submit">Anmelden</button>
 </form>
 
 </body>

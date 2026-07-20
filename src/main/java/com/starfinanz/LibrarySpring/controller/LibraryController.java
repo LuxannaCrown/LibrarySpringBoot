@@ -96,10 +96,24 @@ public class LibraryController {
 
     @PostMapping("/search")
     public String searchBook (
-            @RequestParam long isbn,
+            @RequestParam (required = false) Long isbn,
+            @RequestParam (required = false) String titel,
+            @RequestParam (required = false) String autor,
             HttpSession session) {
 
-        Book book = libraryService.findBookByIsbn(isbn);
+
+
+        if(isbn == null) {
+            isbn = 0L;
+        }
+        if (titel == null) {
+            titel = "";
+        }
+        if (autor == null) {
+            autor = "";
+        }
+
+        Book book = libraryService.findBook(isbn, titel, autor);
 
         session.setAttribute("searchResult", book);
 

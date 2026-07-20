@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
+    background-color: #D2B48C;
     margin: 40px;
     color: #333;
     }
@@ -121,6 +121,9 @@ body > h1 {
 
 
 .logout-button {
+    width: 150px;
+    height: 75px;
+    font-size: 25px;
     background-color:#e74c3c;
     }
 
@@ -232,6 +235,8 @@ body > h1 {
 
 
 .select {
+    margin-top: 15px;
+    margin-bottom: 15px;
     width: 300px;
     }
 
