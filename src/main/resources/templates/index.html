@@ -73,6 +73,7 @@
             <th>Name</th>
             <th>Ausgeliehene Bücher</th>
             <th>Löschen</th>
+            <th>PW ändern</th>
             <th>Rückgabe</th>
         </tr>
 
@@ -86,6 +87,10 @@
                 <form th:action="@{/deleteUser/{userId}(userId=${user.id})}" method="post">
                     <button class="delete-button" type="submit">Löschen</button>
                 </form>
+            </td>
+
+            <td>
+                <a class="button-link" th:href="@{/changePassword/{userId}(userId=${user.id})}">PW ändern</a>
             </td>
 
             <td>

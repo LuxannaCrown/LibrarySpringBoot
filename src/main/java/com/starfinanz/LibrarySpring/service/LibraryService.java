@@ -323,6 +323,23 @@ public class LibraryService {
 
 
 
+      public boolean replacePassword (int userId, String newPassword, String oldPassword) {
+        String hashedPassword = hashPassword(oldPassword);
+
+        for (User user : users) {
+
+            if (hashedPassword.equals(user.getPassword()) && user.getId() == userId) {
+                user.setPassword(hashPassword(newPassword));
+                saveUser();
+                return true;
+            }
+        }
+        return false;
+      }
+
+
+
+
     public String hashPassword  (String password) {
         String fehlschlag = "FAIL";
 
