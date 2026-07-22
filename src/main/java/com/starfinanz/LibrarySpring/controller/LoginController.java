@@ -32,6 +32,14 @@ public class LoginController {
             HttpSession session,
             Model model) {
 
+        if (username.equals("Admin")) {
+            if(libraryService.checkLogin(username, password)) {
+                session.setAttribute("loggedInAdmin",  true);
+                return"redirect:/admin";
+            }
+        }
+
+
         if (libraryService.checkLogin(username, password)) {
             session.setAttribute("loggedIn", true);
             return "redirect:/home";

@@ -24,7 +24,7 @@ public class ReturnController {
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null  && session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -48,7 +48,7 @@ public class ReturnController {
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null   && session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 

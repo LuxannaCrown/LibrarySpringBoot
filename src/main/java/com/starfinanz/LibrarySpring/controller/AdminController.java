@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class LibraryController {
+public class AdminController {
 
     private final LibraryService libraryService;
 
-    public LibraryController(LibraryService libraryService) {
+    public AdminController(LibraryService libraryService) {
         this.libraryService = libraryService;
     }
 
 
-    @GetMapping("/home")
+    @GetMapping("/admin")
     public String home(Model model,
                        HttpSession session) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -37,12 +37,12 @@ public class LibraryController {
 
         session.removeAttribute("searchResult");
 
-        return "index";
+        return "admin";
     }
 
 
 
-    @PostMapping("/add")
+    @PostMapping("/admin/add")
     public String addBook(
             @RequestParam long isbn,
             @RequestParam String titel,
@@ -50,7 +50,7 @@ public class LibraryController {
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -76,18 +76,18 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/home";
+        return "redirect:/admin";
     }
 
 
 
-    @PostMapping("/delete/{isbn}")
+    @PostMapping("/admin/delete/{isbn}")
     public String deleteBook(
             @PathVariable long isbn,
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -100,19 +100,19 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/home";
+        return "redirect:/admin";
     }
 
 
 
-    @PostMapping("/search")
+    @PostMapping("/admin/search")
     public String searchBook (
             @RequestParam (required = false) Long isbn,
             @RequestParam (required = false) String titel,
             @RequestParam (required = false) String autor,
             HttpSession session) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -130,18 +130,18 @@ public class LibraryController {
 
         session.setAttribute("searchResult", book);
 
-        return "redirect:/home";
+        return "redirect:/admin";
     }
 
 
 
-    @PostMapping("/addUser")
+    @PostMapping("/admin/addUser")
     public String addUser(
             @RequestParam String name,
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -161,18 +161,18 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/home";
+        return "redirect:/admin";
     }
 
 
 
-    @PostMapping("/deleteUser/{userId}")
+    @PostMapping("/admin/deleteUser/{userId}")
     public String deleteUser(
             @PathVariable int userId,
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -184,20 +184,20 @@ public class LibraryController {
             return "error-page";
         }
 
-        return "redirect:/home";
+        return "redirect:/admin";
     }
 
 
-    @PostMapping("/closeSession")
+    @PostMapping("/admin/closeSession")
     public String closeSession (
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
-            session.invalidate();
-            return "redirect:/";
+        session.invalidate();
+        return "redirect:/";
     }
 }

@@ -95,6 +95,17 @@ public class LibraryService {
     }
 
 
+    public  User findUserName (String name) {
+
+        for (User user : users) {
+            if (user.getName().equals(name)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
     public Book findBookByIsbn(long isbn) {
 
         for (Book book : books) {
@@ -118,6 +129,7 @@ public class LibraryService {
 
         return null;
     }
+
 
 
     public List<Book> getBorrowedBooks(int userId) {
@@ -164,6 +176,7 @@ public class LibraryService {
 
         return true;
     }
+
 
 
     public boolean deleteBook(long isbn) {
@@ -323,7 +336,7 @@ public class LibraryService {
 
 
 
-      public boolean replacePassword (int userId, String newPassword, String oldPassword) {
+    public boolean replacePassword (int userId, String newPassword, String oldPassword) {
         String hashedPassword = hashPassword(oldPassword);
 
         for (User user : users) {
@@ -336,7 +349,6 @@ public class LibraryService {
         }
         return false;
       }
-
 
 
 
@@ -361,7 +373,7 @@ public class LibraryService {
 
 
 
-   private void saveBook () { //Funktion zum abspeichern in die books.csv Datei
+    private void saveBook () { //Funktion zum abspeichern in die books.csv Datei
 
         try (Writer writer = new FileWriter("src\\main\\resources\\data\\books.csv")) {
             StatefulBeanToCsv<Book> beanToCsv = new StatefulBeanToCsvBuilder(writer)
@@ -371,6 +383,7 @@ public class LibraryService {
             throw new RuntimeException(e);
         }
     }
+
 
 
     private void saveUser () {  //Speichert User änderungen in der users.csv
@@ -383,5 +396,4 @@ public class LibraryService {
             throw new RuntimeException("Fehler beim bearbeiten der users.csv.", e);
         }
     }
-
 }

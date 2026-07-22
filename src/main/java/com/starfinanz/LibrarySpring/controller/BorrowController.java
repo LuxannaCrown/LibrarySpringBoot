@@ -24,7 +24,7 @@ public class BorrowController {
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null   && session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
@@ -43,7 +43,7 @@ public class BorrowController {
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null   && session.getAttribute("loggedInAdmin") == null) {
             return "redirect:/";
         }
 
