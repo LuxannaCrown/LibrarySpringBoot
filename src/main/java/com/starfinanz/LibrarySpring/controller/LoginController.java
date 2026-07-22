@@ -1,5 +1,6 @@
 package com.starfinanz.LibrarySpring.controller;
 
+import com.starfinanz.LibrarySpring.model.User;
 import com.starfinanz.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -32,16 +33,20 @@ public class LoginController {
             HttpSession session,
             Model model) {
 
+        User user = libraryService.findUserName(username.trim());
+
+
         if (username.equals("Admin")) {
-            if(libraryService.checkLogin(username, password)) {
+            if(libraryService.checkLogin(username.trim(), password)) {
                 session.setAttribute("loggedInAdmin",  true);
+                session.setAttribute("loggedUser", user.getId());
                 return"redirect:/admin";
             }
         }
 
-
-        if (libraryService.checkLogin(username, password)) {
+        if (libraryService.checkLogin(username.trim(), password)) {
             session.setAttribute("loggedIn", true);
+            session.setAttribute("loggedUser", user.getId());
             return "redirect:/home";
         }
 

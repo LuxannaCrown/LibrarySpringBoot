@@ -28,6 +28,10 @@ public class ReturnController {
             return "redirect:/";
         }
 
+        int currentUser = (int) session.getAttribute("loggedUser");
+        if (userId != currentUser && currentUser != 0) {
+            return "redirect:/home";
+        }
 
         var user = libraryService.findUserID(userId);
         var books = libraryService.getBorrowedBooks(userId);
@@ -52,6 +56,11 @@ public class ReturnController {
             return "redirect:/";
         }
 
+        int currentUser = (int) session.getAttribute("loggedUser");
+        if (userId != currentUser && currentUser != 0) {
+            return "redirect:/home";
+        }
+
         boolean returned = libraryService.returnBook(isbn, userId);
 
         if (!returned) {
@@ -59,6 +68,10 @@ public class ReturnController {
                     "Buch konnte nicht zurückgegeben werden.");
 
             return "return";
+        }
+
+        if (currentUser == 0) {
+            return "redirect:/admin";
         }
         return "redirect:/home";
     }

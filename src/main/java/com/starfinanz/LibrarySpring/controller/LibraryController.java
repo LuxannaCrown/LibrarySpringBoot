@@ -30,77 +30,15 @@ public class LibraryController {
         if (session.getAttribute("loggedIn") == null) {
             return "redirect:/";
         }
+        int userId = (int) session.getAttribute("loggedUser");
 
         model.addAttribute("books", libraryService.getBooks());
-        model.addAttribute("users", libraryService.getUsers());
+        model.addAttribute("user", libraryService.findUserID(userId));
         model.addAttribute("searchResult", session.getAttribute("searchResult"));
 
         session.removeAttribute("searchResult");
 
         return "index";
-    }
-
-
-
-    @PostMapping("/add")
-    public String addBook(
-            @RequestParam long isbn,
-            @RequestParam String titel,
-            @RequestParam String autor,
-            HttpSession session,
-            Model model) {
-
-        if (session.getAttribute("loggedIn") == null) {
-            return "redirect:/";
-        }
-
-        if (isbn <= 0) {
-            model.addAttribute("error", "Bitte eine gültige ISBN eingeben.");
-            return "error-page";
-        }
-
-        if (titel.isBlank()) {
-            model.addAttribute("error", "Bitte Titel eingeben.");
-            return "error-page";
-        }
-
-        if (autor.isBlank()) {
-            model.addAttribute("error", "Bitte Autor eingeben");
-            return "error-page";
-        }
-
-        boolean success = libraryService.addBook(isbn, titel, autor);
-
-        if (!success){
-            model.addAttribute("error", "Ein Buch mit der ISBN: " + isbn +" existiert bereits");
-            return "error-page";
-        }
-
-        return "redirect:/home";
-    }
-
-
-
-    @PostMapping("/delete/{isbn}")
-    public String deleteBook(
-            @PathVariable long isbn,
-            HttpSession session,
-            Model model) {
-
-        if (session.getAttribute("loggedIn") == null) {
-            return "redirect:/";
-        }
-
-        boolean deleted = libraryService.deleteBook(isbn);
-
-        if (!deleted) {
-            model.addAttribute("error",
-                    "Buch konnte nicht nicht gelöscht werden.");
-
-            return "error-page";
-        }
-
-        return "redirect:/home";
     }
 
 
@@ -133,59 +71,6 @@ public class LibraryController {
         return "redirect:/home";
     }
 
-
-
-    @PostMapping("/addUser")
-    public String addUser(
-            @RequestParam String name,
-            HttpSession session,
-            Model model) {
-
-        if (session.getAttribute("loggedIn") == null) {
-            return "redirect:/";
-        }
-
-        User user = libraryService.findUserName(name);
-
-        if (user.getName().equals(name)) {
-            model.addAttribute("error", "Username exisitert bereits, bitte verwende einen anderen.");
-
-            return "error-page";
-        }
-
-        boolean addedUser = libraryService.addUser(name);
-
-        if(!addedUser) {
-            model.addAttribute("error", "Benutzer konnte nicht hinzugefügt werden.");
-
-            return "error-page";
-        }
-
-        return "redirect:/home";
-    }
-
-
-
-    @PostMapping("/deleteUser/{userId}")
-    public String deleteUser(
-            @PathVariable int userId,
-            HttpSession session,
-            Model model) {
-
-        if (session.getAttribute("loggedIn") == null) {
-            return "redirect:/";
-        }
-
-        boolean deletedUser = libraryService.deleteUser(userId);
-
-        if(!deletedUser) {
-            model.addAttribute("error", "Benutzer konnte nicht gelöscht werden.");
-
-            return "error-page";
-        }
-
-        return "redirect:/home";
-    }
 
 
     @PostMapping("/closeSession")

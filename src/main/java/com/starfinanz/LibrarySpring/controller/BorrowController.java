@@ -28,6 +28,7 @@ public class BorrowController {
             return "redirect:/";
         }
 
+
         model.addAttribute("isbn", isbn);
         model.addAttribute("users", libraryService.getUsers());
 
@@ -47,6 +48,12 @@ public class BorrowController {
             return "redirect:/";
         }
 
+        int currentUser = (int) session.getAttribute("loggedUser");
+        if (userId != currentUser  && currentUser != 0) {
+            model.addAttribute("error", "Du kannst nur für dich selber Bücher ausleihen");
+            return "error-page";
+        }
+
         boolean borrowed = libraryService.borrowBook(isbn, userId);
 
         if (!borrowed) {
@@ -54,6 +61,9 @@ public class BorrowController {
                     "Buch konnte nicht ausgeliehen werden.");
 
             return "error-page";
+        }
+        if (currentUser == 0) {
+            return "redirect:/admin";
         }
         return "redirect:/home";
     }

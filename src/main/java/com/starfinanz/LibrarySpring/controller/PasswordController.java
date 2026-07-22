@@ -29,6 +29,11 @@ public class PasswordController {
             return "redirect:/";
         }
 
+        int currentUser = (int) session.getAttribute("loggedUser");
+        if (userId != currentUser && currentUser != 0) {
+            return "redirect:/home";
+        }
+
         var user = libraryService.findUserID(userId);
 
         model.addAttribute("user", user);
@@ -51,6 +56,11 @@ public class PasswordController {
             return "redirect:/";
         }
 
+        int currentUser = (int) session.getAttribute("loggedUser");
+        if (userId != currentUser && currentUser != 0) {
+            return "redirect:/home";
+        }
+
         var user = libraryService.findUserID(userId);
         model.addAttribute("user", user);
 
@@ -60,6 +70,9 @@ public class PasswordController {
         }
 
         if (libraryService.replacePassword(userId, newPassword, oldPassword)) {
+            if (currentUser == 0) {
+                return "redirect:/admin";
+            }
             return "redirect:/home";
         } else {
             model.addAttribute("error", "Passwort konnte nicht geändert werden");
