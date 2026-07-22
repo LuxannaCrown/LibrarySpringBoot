@@ -45,7 +45,12 @@ public class ReturnController {
     public String returnBook(
             @RequestParam long isbn,
             @PathVariable int userId,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         boolean returned = libraryService.returnBook(isbn, userId);
 

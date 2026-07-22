@@ -5,14 +5,14 @@
     <title>ERROR</title>
 </head>
 
-<body>
+<body class="error-page">
 
-<p th:if="${error}"
+<p class="error-message" th:if="${error}"
    th:text="${error}"
    style="color:red;">
 </p>
 
-<a href="http://localhost:8080/home"><button>Zur Hauptseite zurück</button></a>
+<a th:href="@{/home}"><button>Zur Hauptseite zurück</button></a>
 
 </body>
 </html>

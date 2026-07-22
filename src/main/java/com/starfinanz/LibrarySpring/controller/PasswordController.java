@@ -43,7 +43,21 @@ public class PasswordController {
             @PathVariable int userId,
             @RequestParam String newPassword,
             @RequestParam String oldPassword,
+            @RequestParam String newPasswordCheck,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
+
+        var user = libraryService.findUserID(userId);
+        model.addAttribute("user", user);
+
+        if (!newPassword.equals(newPasswordCheck)) {
+            model.addAttribute("error", "Passwörter müssen übereinstimmen.");
+            return "change-password";
+        }
 
         if (libraryService.replacePassword(userId, newPassword, oldPassword)) {
             return "redirect:/home";

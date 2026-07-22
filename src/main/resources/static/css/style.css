@@ -56,7 +56,7 @@ a:hover {
     border-radius: 10px;
     }
 
-.change-box,
+.changepsw-box,
 .login-box,
 .borrow-box{
     display: flex;
@@ -71,7 +71,7 @@ a:hover {
 
 
 .login-box button,
-.change-box button {
+.changepsw-box button {
     width: 120px;
     margin: auto;
     margin-top: 20px;
@@ -85,13 +85,13 @@ a:hover {
 
 
 .login-box button:hover,
-.change-box button:hover {
+.changepsw-box button:hover {
     background-color: #2980b9;
     }
 
 
 .login-box input,
-.change-box input{
+.changepsw-box input{
     width: 250px;
     padding: 10px;
     margin-top: 5px;
@@ -100,10 +100,11 @@ a:hover {
     font-size: 16px;
     }
 
-.change-page,
+.changepsw-page,
 .login-page,
 .borrow-page,
-.return-page{
+.return-page,
+.error-page {
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -246,3 +247,16 @@ body > h1 {
     width: 300px;
     }
 
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c2c7;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    width: 250px;
+    text-align: center;
+    font-size: 14px;
+    }

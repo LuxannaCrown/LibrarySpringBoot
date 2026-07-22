@@ -46,7 +46,12 @@ public class LibraryController {
             @RequestParam long isbn,
             @RequestParam String titel,
             @RequestParam String autor,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         if (isbn <= 0) {
             model.addAttribute("error", "Bitte eine gültige ISBN eingeben.");
@@ -78,7 +83,12 @@ public class LibraryController {
     @PostMapping("/delete/{isbn}")
     public String deleteBook(
             @PathVariable long isbn,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         boolean deleted = libraryService.deleteBook(isbn);
 
@@ -101,7 +111,9 @@ public class LibraryController {
             @RequestParam (required = false) String autor,
             HttpSession session) {
 
-
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         if(isbn == null) {
             isbn = 0L;
@@ -125,7 +137,12 @@ public class LibraryController {
     @PostMapping("/addUser")
     public String addUser(
             @RequestParam String name,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         boolean addedUser = libraryService.addUser(name);
 
@@ -143,7 +160,12 @@ public class LibraryController {
     @PostMapping("/deleteUser/{userId}")
     public String deleteUser(
             @PathVariable int userId,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         boolean deletedUser = libraryService.deleteUser(userId);
 
@@ -161,6 +183,10 @@ public class LibraryController {
     public String closeSession (
             HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
             session.invalidate();
             return "redirect:/";

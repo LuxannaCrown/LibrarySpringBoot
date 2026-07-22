@@ -40,7 +40,12 @@ public class BorrowController {
     public String borrowBook (
             @PathVariable long isbn,
             @RequestParam int userId,
+            HttpSession session,
             Model model) {
+
+        if (session.getAttribute("loggedIn") == null) {
+            return "redirect:/";
+        }
 
         boolean borrowed = libraryService.borrowBook(isbn, userId);
 
