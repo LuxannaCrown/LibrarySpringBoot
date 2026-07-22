@@ -1,7 +1,6 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #D2B48C;
-    margin: 40px;
     color: #333;
     }
 
@@ -57,8 +56,9 @@ a:hover {
     border-radius: 10px;
     }
 
-
-.login-box {
+.change-box,
+.login-box,
+.borrow-box{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,7 +70,8 @@ a:hover {
     }
 
 
-.login-box button {
+.login-box button,
+.change-box button {
     width: 120px;
     margin: auto;
     margin-top: 20px;
@@ -83,12 +84,14 @@ a:hover {
     }
 
 
-.login-box button:hover {
+.login-box button:hover,
+.change-box button:hover {
     background-color: #2980b9;
     }
 
 
-.login-box input {
+.login-box input,
+.change-box input{
     width: 250px;
     padding: 10px;
     margin-top: 5px;
@@ -97,8 +100,10 @@ a:hover {
     font-size: 16px;
     }
 
-
-.login-page {
+.change-page,
+.login-page,
+.borrow-page,
+.return-page{
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -195,7 +200,8 @@ body > h1 {
     }
 
 
-.add-button {
+.add-button,
+.return-button {
     background-color: #27ae60;
     }
 
@@ -240,35 +246,3 @@ body > h1 {
     width: 300px;
     }
 
-
-.borrow-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    width: 330px;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px #ccc;
-    }
-
-
-.borrow-page {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-
-
-.return-page {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-
-
-.return-button {
-    background-color: #27ae60;
-    }

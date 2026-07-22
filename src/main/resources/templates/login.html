@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Login</title>
 </head>
 
@@ -10,7 +10,7 @@
 
 
 <form class="login-box" action="/login" method="post">
-    <img src="css/images/logo.png" class="logo">
+    <img th:src="@{/css/images/logo.png}" class="logo">
 
     <h1>Bibliothek Login</h1>
 
