@@ -1,4 +1,4 @@
-package com.starfinanz.LibrarySpring.model;
+package com.luxanna.LibrarySpring.model;
 
 
 import com.opencsv.bean.CsvBindByName;

@@ -1,7 +1,7 @@
-package com.starfinanz.LibrarySpring.controller;
+package com.luxanna.LibrarySpring.controller;
 
 
-import com.starfinanz.LibrarySpring.service.LibraryService;
+import com.luxanna.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,11 +45,11 @@ public class BorrowController {
             Model model) {
 
         if (session.getAttribute("loggedIn") == null   && session.getAttribute("loggedInAdmin") == null) {
-            return "redirect:/";
+            return "redirect:/";   //Checkt nach einen gültigen session-token
         }
 
         int currentUser = (int) session.getAttribute("loggedUser");
-        if (userId != currentUser  && currentUser != 0) {
+        if (userId != currentUser  && currentUser != 0) {  //Verhindert Zugriff von Usern auf andere User (außer Admin)
             model.addAttribute("error", "Du kannst nur für dich selber Bücher ausleihen");
             return "error-page";
         }
@@ -62,7 +62,7 @@ public class BorrowController {
 
             return "error-page";
         }
-        if (currentUser == 0) {
+        if (currentUser == 0) {  //Wenn Admin eingeloggt -> führt zurück zur Admin-Page
             return "redirect:/admin";
         }
         return "redirect:/home";

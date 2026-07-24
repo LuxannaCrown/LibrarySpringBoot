@@ -1,14 +1,12 @@
-package com.starfinanz.LibrarySpring.controller;
+package com.luxanna.LibrarySpring.controller;
 
 
-import com.starfinanz.LibrarySpring.model.Book;
-import com.starfinanz.LibrarySpring.model.User;
-import com.starfinanz.LibrarySpring.service.LibraryService;
+import com.luxanna.LibrarySpring.model.Book;
+import com.luxanna.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,7 +25,7 @@ public class LibraryController {
     public String home(Model model,
                        HttpSession session) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null) {  //Verwehrt nutzung ohne gültigen session-token
             return "redirect:/";
         }
         int userId = (int) session.getAttribute("loggedUser");
@@ -50,7 +48,7 @@ public class LibraryController {
             @RequestParam (required = false) String autor,
             HttpSession session) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null) {  //Verwehrt nutzung ohne gültigen session-token
             return "redirect:/";
         }
 
@@ -78,7 +76,7 @@ public class LibraryController {
             HttpSession session,
             Model model) {
 
-        if (session.getAttribute("loggedIn") == null) {
+        if (session.getAttribute("loggedIn") == null) {  //Verwehrt nutzung ohne gültigen session-token
             return "redirect:/";
         }
 

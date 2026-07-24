@@ -1,6 +1,6 @@
-package com.starfinanz.LibrarySpring.controller;
+package com.luxanna.LibrarySpring.controller;
 
-import com.starfinanz.LibrarySpring.service.LibraryService;
+import com.luxanna.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,7 +1,7 @@
-package com.starfinanz.LibrarySpring.controller;
+package com.luxanna.LibrarySpring.controller;
 
-import com.starfinanz.LibrarySpring.model.User;
-import com.starfinanz.LibrarySpring.service.LibraryService;
+import com.luxanna.LibrarySpring.model.User;
+import com.luxanna.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,14 +39,14 @@ public class LoginController {
         if (username.equals("Admin")) {
             if(libraryService.checkLogin(username.trim(), password)) {
                 session.setAttribute("loggedInAdmin",  true);
-                session.setAttribute("loggedUser", user.getId());
+                session.setAttribute("loggedUser", user.getId());  //Setzt session-token als Admin login
                 return"redirect:/admin";
             }
         }
 
         if (libraryService.checkLogin(username.trim(), password)) {
             session.setAttribute("loggedIn", true);
-            session.setAttribute("loggedUser", user.getId());
+            session.setAttribute("loggedUser", user.getId());  //Setzt session-token als User login
             return "redirect:/home";
         }
 

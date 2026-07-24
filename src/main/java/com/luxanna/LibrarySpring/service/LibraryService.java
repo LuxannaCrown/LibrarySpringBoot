@@ -1,11 +1,11 @@
-package com.starfinanz.LibrarySpring.service;
+package com.luxanna.LibrarySpring.service;
 
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.starfinanz.LibrarySpring.model.Book;
-import com.starfinanz.LibrarySpring.model.User;
+import com.luxanna.LibrarySpring.model.Book;
+import com.luxanna.LibrarySpring.model.User;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -95,7 +95,7 @@ public class LibraryService {
     }
 
 
-    public  User findUserName (String name) {
+    public  User findUserName (String name) {  //Sucht nach einen User mit Name (users.csv)
 
         for (User user : users) {
             if (user.getName().equals(name)) {
@@ -106,7 +106,7 @@ public class LibraryService {
     }
 
 
-    public Book findBookByIsbn(long isbn) {
+    public Book findBookByIsbn(long isbn) {  //Sucht nach einen Buch mit ISBN (books.csv)
 
         for (Book book : books) {
             if (book.getIsbn() == isbn) {
@@ -118,7 +118,7 @@ public class LibraryService {
     }
 
 
-    public Book findBook(long isbn, String titel, String autor) {
+    public Book findBook(long isbn, String titel, String autor) { //Sucht nach einem Buch mit Titel/ISBN/Autor (users.csv)
 
         for (Book book : books) {
             if (book.getIsbn() == isbn || book.getTitel().equalsIgnoreCase(titel)
@@ -132,7 +132,7 @@ public class LibraryService {
 
 
 
-    public List<Book> getBorrowedBooks(int userId) {
+    public List<Book> getBorrowedBooks(int userId) { //Gibt alle ausgeliehenen Bücher einer userId zurück (users.csv)
         User user = findUserID(userId);
 
         List<Book> borrowedBooks = new ArrayList<>();
@@ -155,7 +155,7 @@ public class LibraryService {
 
 
 
-    public boolean addBook (long isbn, String titel, String autor) {
+    public boolean addBook (long isbn, String titel, String autor) {  //Fügt ein neues Buch hinzu (books.csv)
         boolean isbnExists = books.stream()  //Checkt ob es bereits einen Eintrag mit der ISBN in books.csv existiert
                 .anyMatch(book -> book.getIsbn() == isbn);
 
@@ -179,8 +179,8 @@ public class LibraryService {
 
 
 
-    public boolean deleteBook(long isbn) {
-        boolean borrowed = users.stream()
+    public boolean deleteBook(long isbn) { //Löscht ein Buch (books.csv)
+        boolean borrowed = users.stream() //Verhindert das Löschen eines Buches wenn ausgeliehen
                 .anyMatch(user -> user.hasBook(isbn));
 
         if (borrowed) {
@@ -198,7 +198,7 @@ public class LibraryService {
 
 
 
-    public boolean borrowBook(long isbn, int userId) {
+    public boolean borrowBook(long isbn, int userId) {  //Funktion zum ausleihen eines Buches
         Book book = findBookByIsbn(isbn);
 
         if (book == null) {
@@ -220,10 +220,10 @@ public class LibraryService {
 
 
 
-        book.setStatus("Ausgeliehen");
-        book.setBesitzer(user.getName());
+        book.setStatus("Ausgeliehen");   //books.csv
+        book.setBesitzer(user.getName());  //books.csv
 
-        user.addBook(isbn);
+        user.addBook(isbn);   //users.csv
 
         saveBook();
         saveUser();
@@ -233,7 +233,7 @@ public class LibraryService {
 
 
 
-    public boolean returnBook(long isbn, int userId) {
+    public boolean returnBook(long isbn, int userId) { //Funktion für Ruckgabe eines Buches
         Book book = findBookByIsbn(isbn);
 
         if (book == null) {  //Buch existiert nicht
@@ -258,7 +258,7 @@ public class LibraryService {
         book.setStatus("Verfügbar");
         book.setBesitzer("Bibliothek");
 
-        user.removeBook(isbn);  //Entfernt der Buch aus den ausgeliehenen Büchern eines Users
+        user.removeBook(isbn);  //Entfernt der Buch aus den ausgeliehenen Büchern eines Users (users.csv)
 
         saveBook();
         saveUser();
@@ -268,7 +268,7 @@ public class LibraryService {
 
 
 
-    public boolean addUser(String name) {
+    public boolean addUser(String name) {  //Funktion um einen neuen User hinzuzufügen (users.csv)
         if (name == null || name.isBlank()) {
             return false;
         }
@@ -296,7 +296,7 @@ public class LibraryService {
 
 
 
-    public boolean deleteUser(int userId) {
+    public boolean deleteUser(int userId) {  //Funktion zum löschen eines Users aus der users.csv
         User user = findUserID(userId);  //Checkt alle user nach gegebener userId
 
         if (user == null) {
@@ -336,7 +336,7 @@ public class LibraryService {
 
 
 
-    public boolean replacePassword (int userId, String newPassword, String oldPassword) {
+    public boolean replacePassword (int userId, String newPassword, String oldPassword) { //Funktion um das alte Passwort durch ein neues zu ersetzen (users.csv)
         String hashedPassword = hashPassword(oldPassword);
 
         for (User user : users) {
@@ -352,7 +352,7 @@ public class LibraryService {
 
 
 
-    public String hashPassword  (String password) {
+    public String hashPassword  (String password) {  //Hasht einmal den Input
         String fehlschlag = "FAIL";
 
         try {

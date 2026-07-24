@@ -1,6 +1,6 @@
-package com.starfinanz.LibrarySpring.controller;
+package com.luxanna.LibrarySpring.controller;
 
-import com.starfinanz.LibrarySpring.service.LibraryService;
+import com.luxanna.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ public class PasswordController {
     }
 
 
-    @GetMapping("/changePassword/{userId}")
+    @GetMapping("/changePassword/{userId}")  //Website für Passwort-Änderung
     public String loginPage(
             @PathVariable int userId,
             HttpSession session,
@@ -43,7 +43,7 @@ public class PasswordController {
 
 
 
-    @PostMapping("/changePassword/{userId}")
+    @PostMapping("/changePassword/{userId}")  //Zugriff von Webiste auf den Service
     public String changePassword (
             @PathVariable int userId,
             @RequestParam String newPassword,
@@ -53,23 +53,23 @@ public class PasswordController {
             Model model) {
 
         if (session.getAttribute("loggedIn") == null && session.getAttribute("loggedInAdmin") == null) {
-            return "redirect:/";
+            return "redirect:/";  //Verwehrt nutzung ohne gültigen session-token
         }
 
         int currentUser = (int) session.getAttribute("loggedUser");
         if (userId != currentUser && currentUser != 0) {
-            return "redirect:/home";
+            return "redirect:/home";  //Wehrt ab, dass User auf andere Zugreifen können (außer dem Admin)
         }
 
         var user = libraryService.findUserID(userId);
         model.addAttribute("user", user);
 
-        if (!newPassword.equals(newPasswordCheck)) {
+        if (!newPassword.equals(newPasswordCheck)) {  //Checkt ob die Passwort-Wiederholung mit der ersten Eingabe übereinstimmt
             model.addAttribute("error", "Passwörter müssen übereinstimmen.");
             return "change-password";
         }
 
-        if (libraryService.replacePassword(userId, newPassword, oldPassword)) {
+        if (libraryService.replacePassword(userId, newPassword, oldPassword)) {  //Wenn Admin eingeloogt -> führt zurück zur Admin-Page
             if (currentUser == 0) {
                 return "redirect:/admin";
             }

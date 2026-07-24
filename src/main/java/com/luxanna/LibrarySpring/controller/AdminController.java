@@ -1,9 +1,9 @@
-package com.starfinanz.LibrarySpring.controller;
+package com.luxanna.LibrarySpring.controller;
 
 
-import com.starfinanz.LibrarySpring.model.Book;
-import com.starfinanz.LibrarySpring.model.User;
-import com.starfinanz.LibrarySpring.service.LibraryService;
+import com.luxanna.LibrarySpring.model.Book;
+import com.luxanna.LibrarySpring.model.User;
+import com.luxanna.LibrarySpring.service.LibraryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +23,11 @@ public class AdminController {
     }
 
 
-    @GetMapping("/admin")
+    @GetMapping("/admin")  //Webiste für Admin-Übersicht
     public String home(Model model,
                        HttpSession session) {
 
-        if (session.getAttribute("loggedInAdmin") == null) {
+        if (session.getAttribute("loggedInAdmin") == null) {   //Lässt nur ein Admin auf die Webiste
             return "redirect:/";
         }
 
@@ -42,7 +42,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/admin/add")
+    @PostMapping("/admin/add")  //Zugriff auf den Service um Buch hinzuzufügen
     public String addBook(
             @RequestParam long isbn,
             @RequestParam String titel,
@@ -81,7 +81,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/admin/delete/{isbn}")
+    @PostMapping("/admin/delete/{isbn}")  //Zugriff auf den Servie um Buch zu löschen
     public String deleteBook(
             @PathVariable long isbn,
             HttpSession session,
@@ -105,7 +105,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/admin/search")
+    @PostMapping("/admin/search")  //Zugriff auf den Service um Buch aus books.csv zu suchen
     public String searchBook (
             @RequestParam (required = false) Long isbn,
             @RequestParam (required = false) String titel,
@@ -135,7 +135,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/admin/addUser")
+    @PostMapping("/admin/addUser")  //Zugriff auf den Service um einen neuen User hinzuzufügen
     public String addUser(
             @RequestParam String name,
             HttpSession session,
@@ -166,7 +166,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/admin/deleteUser/{userId}")
+    @PostMapping("/admin/deleteUser/{userId}") //Zugriff auf den Service um einen User aus users.csv zu löschen
     public String deleteUser(
             @PathVariable int userId,
             HttpSession session,
@@ -188,7 +188,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/admin/closeSession")
+    @PostMapping("/admin/closeSession")  //Macht den session-token ungültig und leitet auf die Login-Page weiter
     public String closeSession (
             HttpSession session,
             Model model) {
